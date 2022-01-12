@@ -11,7 +11,7 @@ info:
     url: https://github.com/TeamPiped/Piped/issues
   license:
     name: MIT
-    url: 'https://opensource.org/licenses/MIT'
+    url: "https://opensource.org/licenses/MIT"
 tags:
   - name: unauthenticated
     description: Requests that can be made by anyone
@@ -32,9 +32,9 @@ paths:
           required: true
           example: US
           schema:
-            $ref: '#/components/schemas/Regions'
+            $ref: "#/components/schemas/Regions"
       responses:
-        '200':
+        "200":
           description: Array of trending Videos.
           content:
             application/json:
@@ -42,7 +42,13 @@ paths:
                 type: array
                 items:
                   anyOf:
-                  - $ref: '#/components/schemas/StreamItem'
+                    - $ref: "#/components/schemas/StreamItem"
+        "500":
+          description: Server Side exception
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionError"
   /streams/{videoId}:
     get:
       tags:
@@ -60,34 +66,265 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The information about the video.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VideoInfo'
-        '500':
+                $ref: "#/components/schemas/VideoInfo"
+        "500":
           description: Server Side exception
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionError'
+                $ref: "#/components/schemas/ExceptionError"
+  /channel/{channelId}:
+    get:
+      tags:
+        - unauthenticated
+      summary: Gets Channel Information
+      operationId: channelInfoId
+      description: |
+        Gets all available Channel information about a channel.
+      parameters:
+        - in: path
+          name: channelId
+          description: The channel ID of the YouTube channel you want to get information about.
+          required: true
+          example: UCs6KfncB4OV6Vug4o_bzijg
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The information about the channel.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChannelInfo"
+        "500":
+          description: Server Side exception
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionError"
+  /c/{name}:
+    get:
+      tags:
+        - unauthenticated
+      summary: Gets Channel Information
+      operationId: channelInfoName
+      description: |
+        Gets all available Channel information about a channel.
+      parameters:
+        - in: path
+          name: name
+          description: The name of the YouTube channel you want to get information about.
+          required: true
+          example: Dream
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The information about the channel.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChannelInfo"
+        "500":
+          description: Server Side exception
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionError"
+  /user/{username}:
+    get:
+      tags:
+        - unauthenticated
+      summary: Gets Channel Information
+      operationId: channelInfoUsername
+      description: |
+        Gets all available Channel information about a channel.
+      parameters:
+        - in: path
+          name: username
+          description: The username of the YouTube channel you want to get information about.
+          required: true
+          example: DreamTraps
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The information about the channel.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChannelInfo"
+        "500":
+          description: Server Side exception
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionError"
 components:
   schemas:
     Regions:
       type: string
-      enum: ["DZ", "AR", "AU", "AT", "AZ", "BH", "BD", "BY", "BE", "BO", "BA", "BR", "BG", "CA", "CL", "CO", "CR", "HR", "CY", "CZ", "DK", "DO", "EC", "EG", "SV", "EE", "FI", "FR", "GE", "DE", "GH", "GR", "GT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IL", "IT", "JM", "JP", "JO", "KZ", "KE", "KW", "LV", "LB", "LY", "LI", "LT", "LU", "MY", "MT", "MX", "ME", "MA", "NP", "NL", "NZ", "NI", "NG", "MK", "NO", "OM", "PK", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RO", "RU", "SA", "SN", "RS", "SG", "SK", "SI", "ZA", "KR", "ES", "LK", "SE", "CH", "TW", "TZ", "TH", "TN", "TR", "UG", "UA", "AE", "GB", "US", "UY", "VE", "VN", "YE", "ZW"]
+      enum:
+        [
+          "DZ",
+          "AR",
+          "AU",
+          "AT",
+          "AZ",
+          "BH",
+          "BD",
+          "BY",
+          "BE",
+          "BO",
+          "BA",
+          "BR",
+          "BG",
+          "CA",
+          "CL",
+          "CO",
+          "CR",
+          "HR",
+          "CY",
+          "CZ",
+          "DK",
+          "DO",
+          "EC",
+          "EG",
+          "SV",
+          "EE",
+          "FI",
+          "FR",
+          "GE",
+          "DE",
+          "GH",
+          "GR",
+          "GT",
+          "HN",
+          "HK",
+          "HU",
+          "IS",
+          "IN",
+          "ID",
+          "IQ",
+          "IE",
+          "IL",
+          "IT",
+          "JM",
+          "JP",
+          "JO",
+          "KZ",
+          "KE",
+          "KW",
+          "LV",
+          "LB",
+          "LY",
+          "LI",
+          "LT",
+          "LU",
+          "MY",
+          "MT",
+          "MX",
+          "ME",
+          "MA",
+          "NP",
+          "NL",
+          "NZ",
+          "NI",
+          "NG",
+          "MK",
+          "NO",
+          "OM",
+          "PK",
+          "PA",
+          "PG",
+          "PY",
+          "PE",
+          "PH",
+          "PL",
+          "PT",
+          "PR",
+          "QA",
+          "RO",
+          "RU",
+          "SA",
+          "SN",
+          "RS",
+          "SG",
+          "SK",
+          "SI",
+          "ZA",
+          "KR",
+          "ES",
+          "LK",
+          "SE",
+          "CH",
+          "TW",
+          "TZ",
+          "TH",
+          "TN",
+          "TR",
+          "UG",
+          "UA",
+          "AE",
+          "GB",
+          "US",
+          "UY",
+          "VE",
+          "VN",
+          "YE",
+          "ZW",
+        ]
     VideoInfo:
       type: object
       properties:
         audioStreams:
           type: array
           items:
-            $ref: '#/components/schemas/Stream'
+            $ref: "#/components/schemas/Stream"
         relatedStreams:
           type: array
           items:
-            $ref: '#/components/schemas/StreamItem'
+            $ref: "#/components/schemas/StreamItem"
+    ChannelInfo:
+      type: object
+      properties:
+        avatarUrl:
+          type: string
+          description: The URL of the channel's avatar.
+        bannerUrl:
+          type: string
+          description: The URL of the channel's banner.
+        description:
+          type: string
+          description: The channel's description.
+        id:
+          type: string
+          description: The ID of the channel.
+          example: UCs6KfncB4OV6Vug4o_bzijg
+        name:
+          type: string
+          description: The name of the channel.
+          example: Techlore
+        nextpage:
+          type: string
+          description: The parameter used to get the next page of related videos.
+        relatedStreams:
+          type: array
+          items:
+            $ref: "#/components/schemas/StreamItem"
+        subscriberCount:
+          type: integer
+          description: The number of subscribers the channel has.
+          example: 170000
+        verified:
+          type: boolean
+          description: Whether the channel is verified.
+          example: true
     Stream:
       properties:
         url:
