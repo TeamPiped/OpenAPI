@@ -1,0 +1,177 @@
+openapi: 3.0.0
+servers:
+  - description: Official Instance
+    url: https://pipedapi.kavin.rocks
+info:
+  description: This is an API specification for Piped API instances.
+  version: "1.0.0"
+  title: Piped API
+  contact:
+    email: kavin@kavin.rocks
+    url: https://github.com/TeamPiped/Piped/issues
+  license:
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
+tags:
+  - name: unauthenticated
+    description: Requests that can be made by anyone
+  - name: authenticated
+    description: Requests that can only be made when logged in, with an authToken
+paths:
+  /trending:
+    get:
+      tags:
+        - unauthenticated
+      summary: Gets all Trending Videos
+      operationId: trending
+      description: Gets all Trending Videos in the requested country.
+      parameters:
+        - in: query
+          name: region
+          description: The Region to get trending videos from.
+          required: true
+          example: US
+          schema:
+            $ref: '#/components/schemas/Regions'
+      responses:
+        '200':
+          description: Array of trending Videos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/StreamItem'
+  /streams/{videoId}:
+    get:
+      tags:
+        - unauthenticated
+      summary: Gets Video Information
+      operationId: streamInfo
+      description: |
+        Gets all available Stream information about a video.
+      parameters:
+        - in: path
+          name: videoId
+          description: The video ID of the YouTube video you want to get information about.
+          required: true
+          example: dQw4w9WgXcQ
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The information about the video.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoInfo'
+        '500':
+          description: Server Side exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionError'
+components:
+  schemas:
+    Regions:
+      type: string
+      enum: ["DZ", "AR", "AU", "AT", "AZ", "BH", "BD", "BY", "BE", "BO", "BA", "BR", "BG", "CA", "CL", "CO", "CR", "HR", "CY", "CZ", "DK", "DO", "EC", "EG", "SV", "EE", "FI", "FR", "GE", "DE", "GH", "GR", "GT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IL", "IT", "JM", "JP", "JO", "KZ", "KE", "KW", "LV", "LB", "LY", "LI", "LT", "LU", "MY", "MT", "MX", "ME", "MA", "NP", "NL", "NZ", "NI", "NG", "MK", "NO", "OM", "PK", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RO", "RU", "SA", "SN", "RS", "SG", "SK", "SI", "ZA", "KR", "ES", "LK", "SE", "CH", "TW", "TZ", "TH", "TN", "TR", "UG", "UA", "AE", "GB", "US", "UY", "VE", "VN", "YE", "ZW"]
+    VideoInfo:
+      type: object
+      properties:
+        audioStreams:
+          type: array
+          items:
+            $ref: '#/components/schemas/Stream'
+        relatedStreams:
+          type: array
+          items:
+            $ref: '#/components/schemas/StreamItem'
+    Stream:
+      properties:
+        url:
+          type: string
+          description: The URL of the stream.
+        format:
+          type: string
+          description: The format of the stream.
+          enum: [MPEG_4, v3GPP, WEBM, M4A, WEBMA_OPUS]
+          example: MPEG_4
+        quality:
+          type: string
+          description: The quality of the stream.
+          example: 1080p
+        mimeType:
+          type: string
+          description: The mime type of the stream.
+          example: video/mp4
+        codec:
+          type: string
+          description: The codec of the stream.
+          example: avc1.64002a
+        videoOnly:
+          type: boolean
+        bitrate:
+          type: integer
+        initStart:
+          type: integer
+        initEnd:
+          type: integer
+        indexStart:
+          type: integer
+        indexEnd:
+          type: integer
+        width:
+          type: integer
+        height:
+          type: integer
+        fps:
+          type: integer
+    StreamItem:
+      required:
+        - duration
+        - thumbnail
+        - title
+        - url
+      properties:
+        duration:
+          type: integer
+          description: The duration of the video in seconds.
+        thumbnail:
+          type: string
+          description: The thumbnail of the video.
+        title:
+          type: string
+          description: The title of the video.
+        uploadedDate:
+          type: string
+          example: 3 months ago
+          description: The relative date the video was uploaded on.
+        uploaderAvatar:
+          type: string
+          description: The avatar of the channel of the video.
+        uploaderUrl:
+          type: string
+          description: The relative URL of the channel of the video.
+        uploaderVerified:
+          type: boolean
+          description: Whether or not the channel has a verified badge.
+        url:
+          type: string
+          description: The relative URL to the video.
+        views:
+          type: integer
+          description: The number of views the video has.
+    ExceptionError:
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: The stacktrace provided by the server.
+        message:
+          type: string
+          description: The error message from the stacktrace.
+      description: When a server-side exception takes place.
