@@ -41,8 +41,7 @@ paths:
               schema:
                 type: array
                 items:
-                  anyOf:
-                    - $ref: "#/components/schemas/StreamItem"
+                  $ref: "#/components/schemas/StreamItem"
         "500":
           description: Server Side exception
           content:
@@ -388,6 +387,9 @@ components:
         uploaderAvatar:
           type: string
           description: The avatar of the channel of the video.
+        uploaderName:
+          type: string
+          description: The name of the channel of the video.
         uploaderUrl:
           type: string
           description: The relative URL of the channel of the video.
