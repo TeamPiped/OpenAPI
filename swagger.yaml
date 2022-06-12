@@ -164,6 +164,41 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionError"
+  /nextpage/channel/{channelId}:
+    get:
+      tags:
+        - unauthenticated
+      summary: Gets more channel videos
+      operationId: channelNextPage
+      description: |
+        Gets more channel videos.
+      parameters:
+        - in: path
+          name: channelId
+          description: The channel ID of the YouTube channel you want to get more videos from.
+          required: true
+          example: UCs6KfncB4OV6Vug4o_bzijg
+          schema:
+            type: string
+        - in: query
+          name: nextpage
+          description: The next page token to get more videos from.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The information about the channel.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StreamsPage"
+        "500":
+          description: Server Side exception
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionError"
 components:
   schemas:
     Regions:
@@ -437,13 +472,19 @@ components:
         title:
           type: string
           description: The title of the video.
+        uploaded:
+          type: integer
+          description: The date in unix epoch the video was uploaded.
         uploadedDate:
           type: string
           example: 3 months ago
           description: The relative date the video was uploaded on.
+          deprecated: true
+          nullable: true
         uploaderAvatar:
           type: string
           description: The avatar of the channel of the video.
+          nullable: true
         uploaderName:
           type: string
           description: The name of the channel of the video.
@@ -459,6 +500,17 @@ components:
         views:
           type: integer
           description: The number of views the video has.
+    StreamsPage:
+      type: object
+      properties:
+        relatedStreams:
+          type: array
+          items:
+            $ref: "#/components/schemas/StreamItem"
+        nextpage:
+          type: string
+          nullable: true
+          description: The parameter used to get the next page of this page.
     ExceptionError:
       required:
         - error
