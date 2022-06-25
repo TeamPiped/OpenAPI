@@ -376,6 +376,9 @@ components:
         uploaderVerified:
           type: boolean
           description: Whether the video's uploader is verified.
+        views:
+          type: integer
+          description: The number of views the video has.
         relatedStreams:
           type: array
           items:
