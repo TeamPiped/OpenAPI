@@ -199,6 +199,70 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionError"
+  /comments/{videoId}:
+    get:
+      tags:
+        - unauthenticated
+      summary: Gets Comments
+      operationId: comments
+      description: |
+        Gets the comments for a video.
+      parameters:
+        - in: path
+          name: videoId
+          description: The video ID of the YouTube video you want to get comments from.
+          required: true
+          example: dQw4w9WgXcQ
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The first page of comments for the video.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommentsPage"
+        "500":
+          description: Server Side exception
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionError"
+  /nextpage/comments/{videoId}:
+    get:
+      tags:
+        - unauthenticated
+      summary: Gets more comments
+      operationId: commentsNextPage
+      description: |
+        Gets more comments.
+      parameters:
+        - in: path
+          name: videoId
+          description: The video ID of the YouTube video you want to get more comments from.
+          required: true
+          example: dQw4w9WgXcQ
+          schema:
+            type: string
+        - in: query
+          name: nextpage
+          description: The next page token to get more comments from.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The page of comments from the video.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommentsPage"
+        "500":
+          description: Server Side exception
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionError"
 components:
   schemas:
     Regions:
@@ -541,3 +605,55 @@ components:
         url:
           type: string
           description: The URL of the subtitle.
+    Comment:
+      type: object
+      properties:
+        author:
+          type: string
+          description: The name of the author of the comment.
+        thumbnail:
+          type: string
+          description: The thumbnail/avatar of the author of the comment.
+        commentId:
+          type: string
+          description: The ID of the comment.
+        commentText:
+          type: string
+          description: The text of the comment.
+        commentedTime:
+          type: string
+          example: 3 months ago
+          description: The relative time the comment was made.
+        commentorUrl:
+          type: string
+          description: The relative URL of the author of the comment.
+          example: "/channel/UCs6KfncB4OV6Vug4o_bzijg"
+        repliesPage:
+          type: string
+          description: The parameter used as the nextpage to fetch replies for this comment.
+        likeCount:
+          type: integer
+          description: The number of likes the comment has.
+        hearted:
+          type: boolean
+          description: Whether the comment was hearted by the video's uploader.
+        pinned:
+          type: boolean
+          description: Whether the comment was pinned by the video's uploader.
+        verified:
+          type: boolean
+          description: Whether the author of the comment is verified.
+    CommentsPage:
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Comment"
+        nextpage:
+          type: string
+          nullable: true
+          description: The parameter used to get the next page of comments.
+        disabled:
+          type: boolean
+          description: Whether or not comments are disabled on the video.
