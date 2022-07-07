@@ -785,6 +785,12 @@ components:
         videos:
           type: integer
           description: The number of videos in the playlist.
+    SearchItem:
+      type: object
+      anyOf:
+        - $ref: "#/components/schemas/StreamItem"
+        - $ref: "#/components/schemas/ChannelItem"
+        - $ref: "#/components/schemas/PlaylistItem"
     SearchPage:
       type: object
       properties:
@@ -793,10 +799,8 @@ components:
           description: Whether the search query was corrected.
         items:
           type: array
-          anyOf:
-            - $ref: "#/components/schemas/StreamItem"
-            - $ref: "#/components/schemas/ChannelItem"
-            - $ref: "#/components/schemas/PlaylistItem"
+          items:
+            $ref: "#/components/schemas/SearchItem"
           example:
             - description: "Join us in spreading privacy and security to the masses. Home of: 🕵️‍♀️ Go Incognito | A Guide To Security, Privacy, ..."
               name: "Techlore"
