@@ -263,6 +263,82 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionError"
+  /search:
+    get:
+      tags:
+        - unauthenticated
+      summary: Searches for videos, channels, and playlists.
+      operationId: search
+      description: |
+        Searches for videos, channels, and playlists.
+      parameters:
+        - in: query
+          name: q
+          description: The search query string.
+          required: true
+          example: "Techlore"
+          schema:
+            type: string
+        - in: query
+          name: filter
+          description: The filter parameter specifies a filter query that restricts the results to items that match the filter.
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchFilter"
+      responses:
+        "200":
+          description: The first page of search results.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchPage"
+        "500":
+          description: Server Side exception
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionError"
+  /nextpage/search:
+    get:
+      tags:
+        - unauthenticated
+      summary: Gets more search results
+      operationId: searchNextPage
+      description: |
+        Gets more search results.
+      parameters:
+        - in: query
+          name: nextpage
+          description: The next page token to get more search results from.
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: The search query string.
+          required: true
+          example: "Techlore"
+          schema:
+            type: string
+        - in: query
+          name: filter
+          description: The filter parameter specifies a filter query that restricts the results to items that match the filter.
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchFilter"
+      responses:
+        "200":
+          description: The page of search results.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchPage"
+        "500":
+          description: Server Side exception
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionError"
 components:
   schemas:
     Regions:
@@ -376,6 +452,19 @@ components:
           "VN",
           "YE",
           "ZW",
+        ]
+    SearchFilter:
+      type: string
+      enum:
+        [
+          "all",
+          "videos",
+          "channels",
+          "playlists",
+          "music_songs",
+          "music_videos",
+          "music_albums",
+          "music_playlists",
         ]
     VideoInfo:
       type: object
@@ -657,3 +746,83 @@ components:
         disabled:
           type: boolean
           description: Whether or not comments are disabled on the video.
+    ChannelItem:
+      type: object
+      properties:
+        description:
+          type: string
+          description: The description of the channel.
+        name:
+          type: string
+          description: The name of the channel.
+        subscribers:
+          type: integer
+          description: The number of subscribers the channel has.
+        thumbnail:
+          type: string
+          description: The thumbnail of the channel.
+        url:
+          type: string
+          description: The relative URL of the channel.
+        verified:
+          type: boolean
+          description: Whether the channel is verified.
+        videos:
+          type: integer
+          description: The number of videos the channel has.
+    PlaylistItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the playlist.
+        thumbnail:
+          type: string
+          description: The thumbnail of the playlist.
+        url:
+          type: string
+          description: The relative URL of the playlist.
+        videos:
+          type: integer
+          description: The number of videos in the playlist.
+    SearchPage:
+      type: object
+      properties:
+        corrected:
+          type: boolean
+          description: Whether the search query was corrected.
+        items:
+          type: array
+          anyOf:
+            - $ref: "#/components/schemas/StreamItem"
+            - $ref: "#/components/schemas/ChannelItem"
+            - $ref: "#/components/schemas/PlaylistItem"
+          example:
+            - description: "Join us in spreading privacy and security to the masses. Home of: 🕵️‍♀️ Go Incognito | A Guide To Security, Privacy, ..."
+              name: "Techlore"
+              subscribers: 192000
+              thumbnail: "https://pipedproxy.kavin.rocks/lwHqZYuTM3v0oBB_RevOFbD_cHL7AWUfYID_iv8trv6_4u4r7Go_t4qFJplYiJNQVC-14Tb8=s88-c-k-c0x00ffffff-no-rw-mo?host=yt3.ggpht.com"
+              url: "/channel/UCs6KfncB4OV6Vug4o_bzijg"
+              verified: true
+              videos: 320
+            - duration: 527
+              shortDescription: "Top 10 best tools to boost privacy and security today. Most times, you need to put in a lot of effort to gain privacy, security, and ..."
+              thumbnail: "https://pipedproxy.kavin.rocks/vi/LLpLU317zfc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFbyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDZO4ZxHFoyHKmPQTZAVVVDTmB8FA&host=i.ytimg.com"
+              title: "Top 10 Tools To Boost Privacy & Security!"
+              uploaded: 1625590800000
+              uploadedDate: "1 year ago"
+              uploaderAvatar: "https://pipedproxy.kavin.rocks/lwHqZYuTM3v0oBB_RevOFbD_cHL7AWUfYID_iv8trv6_4u4r7Go_t4qFJplYiJNQVC-14Tb8=s68-c-k-c0x00ffffff-no-rw?host=yt3.ggpht.com"
+              uploaderName: "Techlore"
+              uploaderUrl: "/channel/UCs6KfncB4OV6Vug4o_bzijg"
+              uploaderVerified: true
+              url: "/watch?v=LLpLU317zfc"
+              views: 113599
+        nextpage:
+          type: string
+          nullable: true
+          description: The parameter used to get the next page of this page.
+        suggestion:
+          type: string
+          nullable: true
+          example: null
+          description: The suggested search query.
