@@ -787,7 +787,7 @@ components:
           description: The number of videos in the playlist.
     SearchItem:
       type: object
-      anyOf:
+      oneOf:
         - $ref: "#/components/schemas/StreamItem"
         - $ref: "#/components/schemas/ChannelItem"
         - $ref: "#/components/schemas/PlaylistItem"
