@@ -13,10 +13,20 @@ info:
     name: MIT
     url: "https://opensource.org/licenses/MIT"
 tags:
+  - name: video
+    description: Video related operations.
+  - name: channel
+    description: Channel related operations.
+  - name: playlist
+    description: Playlist related operations.
+  - name: search
+    description: Search related operations.
+  - name: feed
+    description: Feed related operations.
   - name: unauthenticated
-    description: Requests that can be made by anyone
+    description: Requests that can be made by anyone, without any authentication.
   - name: authenticated
-    description: Requests that can only be made when logged in, with an authToken
+    description: Requests that can only be made when logged in, with an authToken.
 paths:
   /trending:
     get:
@@ -51,6 +61,7 @@ paths:
   /streams/{videoId}:
     get:
       tags:
+        - video
         - unauthenticated
       summary: Gets Video Information
       operationId: streamInfo
@@ -64,6 +75,7 @@ paths:
           example: dQw4w9WgXcQ
           schema:
             type: string
+            pattern: ^([a-zA-Z0-9_-]{11})$
       responses:
         "200":
           description: The information about the video.
@@ -80,6 +92,7 @@ paths:
   /channel/{channelId}:
     get:
       tags:
+        - channel
         - unauthenticated
       summary: Gets Channel Information
       operationId: channelInfoId
@@ -93,6 +106,7 @@ paths:
           example: UCs6KfncB4OV6Vug4o_bzijg
           schema:
             type: string
+            pattern: ^([a-zA-Z0-9_-]{24})$
       responses:
         "200":
           description: The information about the channel.
@@ -109,6 +123,7 @@ paths:
   /c/{name}:
     get:
       tags:
+        - channel
         - unauthenticated
       summary: Gets Channel Information
       operationId: channelInfoName
@@ -138,6 +153,7 @@ paths:
   /user/{username}:
     get:
       tags:
+        - channel
         - unauthenticated
       summary: Gets Channel Information
       operationId: channelInfoUsername
@@ -167,6 +183,7 @@ paths:
   /nextpage/channel/{channelId}:
     get:
       tags:
+        - channel
         - unauthenticated
       summary: Gets more channel videos
       operationId: channelNextPage
@@ -180,6 +197,7 @@ paths:
           example: UCs6KfncB4OV6Vug4o_bzijg
           schema:
             type: string
+            pattern: "^[a-zA-Z0-9_-]{24}$"
         - in: query
           name: nextpage
           description: The next page token to get more videos from.
@@ -202,6 +220,7 @@ paths:
   /comments/{videoId}:
     get:
       tags:
+        - video
         - unauthenticated
       summary: Gets Comments
       operationId: comments
@@ -215,6 +234,7 @@ paths:
           example: dQw4w9WgXcQ
           schema:
             type: string
+            pattern: ^([a-zA-Z0-9_-]{11})$
       responses:
         "200":
           description: The first page of comments for the video.
@@ -231,6 +251,7 @@ paths:
   /nextpage/comments/{videoId}:
     get:
       tags:
+        - video
         - unauthenticated
       summary: Gets more comments
       operationId: commentsNextPage
@@ -244,6 +265,7 @@ paths:
           example: dQw4w9WgXcQ
           schema:
             type: string
+            pattern: ^([a-zA-Z0-9_-]{11})$
         - in: query
           name: nextpage
           description: The next page token to get more comments from.
@@ -266,6 +288,7 @@ paths:
   /search:
     get:
       tags:
+        - search
         - unauthenticated
       summary: Searches for videos, channels, and playlists.
       operationId: search
@@ -301,6 +324,7 @@ paths:
   /nextpage/search:
     get:
       tags:
+        - search
         - unauthenticated
       summary: Gets more search results
       operationId: searchNextPage
@@ -342,6 +366,7 @@ paths:
   /feed/unauthenticated:
     get:
       tags:
+        - feed
         - unauthenticated
       summary: Generate a feed while unauthenticated, from a list of channelIds.
       operationId: feedUnauthenticated
@@ -649,6 +674,7 @@ components:
         fps:
           type: integer
     StreamItem:
+      type: object
       required:
         - duration
         - thumbnail
