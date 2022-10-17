@@ -339,6 +339,42 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionError"
+  /feed/unauthenticated:
+    get:
+      tags:
+        - unauthenticated
+      summary: Generate a feed while unauthenticated, from a list of channelIds.
+      operationId: feedUnauthenticated
+      description: |
+        Generates a user feed while unauthenticated.
+      parameters:
+        - in: query
+          name: channels
+          description: A list of channelIds to generate a feed from.
+          required: true
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+            example:
+              - UCs6KfncB4OV6Vug4o_bzijg
+              - UClcE-kVhqyiHCcjYwcpfj9w
+      responses:
+        "200":
+          description: The video items from the feed.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StreamItem"
+        "500":
+          description: Server Side exception
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionError"
 components:
   schemas:
     Regions:
