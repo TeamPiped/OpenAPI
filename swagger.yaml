@@ -723,6 +723,9 @@ components:
         likeCount:
           type: integer
           description: The number of likes the comment has.
+        replyCount:
+          type: integer
+          description: The number of replies the comment has.
         hearted:
           type: boolean
           description: Whether the comment was hearted by the video's uploader.
