@@ -94,7 +94,7 @@ paths:
       tags:
         - channel
         - unauthenticated
-      summary: Gets Channel Information
+      summary: Gets Channel Information from ID.
       operationId: channelInfoId
       description: |
         Gets all available Channel information about a channel.
@@ -125,7 +125,7 @@ paths:
       tags:
         - channel
         - unauthenticated
-      summary: Gets Channel Information
+      summary: Gets Channel Information from name.
       operationId: channelInfoName
       description: |
         Gets all available Channel information about a channel.
@@ -155,7 +155,7 @@ paths:
       tags:
         - channel
         - unauthenticated
-      summary: Gets Channel Information
+      summary: Gets Channel Information from username.
       operationId: channelInfoUsername
       description: |
         Gets all available Channel information about a channel.
@@ -382,6 +382,7 @@ paths:
             type: array
             items:
               type: string
+              pattern: "^[a-zA-Z0-9_-]{24}$"
             example:
               - UCs6KfncB4OV6Vug4o_bzijg
               - UClcE-kVhqyiHCcjYwcpfj9w
@@ -681,6 +682,10 @@ components:
         - title
         - url
       properties:
+        type:
+          type: string
+          description: The type of the stream item. Always stream.
+          example: stream
         duration:
           type: integer
           description: The duration of the video in seconds.
@@ -718,6 +723,13 @@ components:
         views:
           type: integer
           description: The number of views the video has.
+        isShort:
+          type: boolean
+          description: Whether or not the video is a short video.
+        shortDescription:
+          type: string
+          description: The short description of the video.
+          nullable: true
     StreamsPage:
       type: object
       properties:
@@ -814,6 +826,10 @@ components:
     ChannelItem:
       type: object
       properties:
+        type:
+          type: string
+          description: The type of the channel item. Always channel.
+          example: channel
         description:
           type: string
           description: The description of the channel.
@@ -838,6 +854,10 @@ components:
     PlaylistItem:
       type: object
       properties:
+        type:
+          type: string
+          description: The type of the playlist item. Always playlist.
+          example: playlist
         name:
           type: string
           description: The name of the playlist.
