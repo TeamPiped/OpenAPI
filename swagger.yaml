@@ -874,6 +874,10 @@ components:
       type: object
       discriminator:
         propertyName: type
+        mapping:
+          stream: "#/components/schemas/StreamItem"
+          channel: "#/components/schemas/ChannelItem"
+          playlist: "#/components/schemas/PlaylistItem"
       oneOf:
         - $ref: "#/components/schemas/StreamItem"
         - $ref: "#/components/schemas/ChannelItem"
