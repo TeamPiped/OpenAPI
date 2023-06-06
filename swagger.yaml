@@ -880,6 +880,10 @@ components:
       properties:
         type:
           type: string
+          enum:
+            - stream
+            - channel
+            - playlist
       oneOf:
         - $ref: "#/components/schemas/StreamItem"
         - $ref: "#/components/schemas/ChannelItem"
