@@ -636,6 +636,9 @@ components:
           example: true
     Stream:
       properties:
+        itag:
+          type: integer
+          description: The itag of the stream, or -1 if not available.
         url:
           type: string
           description: The URL of the stream.
@@ -674,6 +677,18 @@ components:
           type: integer
         fps:
           type: integer
+        audioTrackId:
+          type: string
+          nullable: true
+        audioTrackName:
+          type: string
+          nullable: true
+        audioTrackType:
+          type: string
+          nullable: true
+        audioTrackLocale:
+          type: string
+          nullable: true
     StreamItem:
       type: object
       required:
@@ -730,6 +745,9 @@ components:
           type: string
           description: The short description of the video.
           nullable: true
+        contentLength:
+          type: integer
+          description: The content length of the video.
     StreamsPage:
       type: object
       properties:
@@ -809,6 +827,12 @@ components:
         verified:
           type: boolean
           description: Whether the author of the comment is verified.
+        creatorReplied:
+          type: boolean
+          description: Whether the video's uploader replied to the comment.
+        channelOwner:
+          type: boolean
+          description: Whether the author of the comment is the video's uploader.
     CommentsPage:
       type: object
       properties:
