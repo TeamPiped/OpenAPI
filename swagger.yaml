@@ -527,6 +527,7 @@ components:
           "music_videos",
           "music_albums",
           "music_playlists",
+          "music_artists",
         ]
     VideoInfo:
       type: object
