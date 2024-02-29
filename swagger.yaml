@@ -713,6 +713,7 @@ components:
           description: The title of the video.
         uploaded:
           type: integer
+          format: int64
           description: The date in unix epoch the video was uploaded.
         uploadedDate:
           type: string
