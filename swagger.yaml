@@ -594,6 +594,7 @@ components:
           description: Whether the video's uploader is verified.
         views:
           type: integer
+          format: int64
           description: The number of views the video has.
         relatedStreams:
           type: array
@@ -646,7 +647,9 @@ components:
         format:
           type: string
           description: The format of the stream.
-          enum: [MPEG_4, v3GPP, WEBM, M4A, WEBMA_OPUS]
+          # Values from: https://github.com/TeamNewPipe/NewPipeExtractor/blob/61059b1afa1501e4243fc4b92d2fa28683118f4c/extractor/src/main/java/org/schabi/newpipe/extractor/MediaFormat.java.
+          # Additionally has the options of HLS and MP4, as used internally with Piped: https://github.com/TeamPiped/Piped-Backend/blob/df57236657ab94ee7ee8890513e5cc567d26eeec/src/main/java/me/kavin/piped/server/handlers/StreamHandlers.java.
+          enum: [MPEG_4, v3GPP, WEBM, M4A, WEBMA, MP3, MP2, OPUS, OGG, WEBMA_OPUS, AIFF, AIF, WAV, FLAC, ALAC, VTT, TTML, TRANSCRIPT1, TRANSCRIPT2, TRANSCRIPT3, SRT, MP4, HLS]
           example: MPEG_4
         quality:
           type: string
@@ -739,6 +742,7 @@ components:
           description: The relative URL to the video.
         views:
           type: integer
+          format: int64
           description: The number of views the video has.
         isShort:
           type: boolean
